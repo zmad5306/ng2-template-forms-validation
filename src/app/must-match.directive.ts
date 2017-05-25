@@ -13,7 +13,7 @@ export class MustMatchDirective implements Validator {
 
   validate(c: FormGroup) {
     let valid = true;
-    //this fires before the form is done and throws an error becuase the input files aren't built
+    //this fires before the form is done and throws an error becuase the input fields aren't built
     if (c.contains('password') && c.contains('confirmPassword')) {
       if (c.controls.password.value !== c.controls.confirmPassword.value) {
         valid = false;

@@ -13,9 +13,10 @@
     </div>
     <div>
       <label for="confirmPassword">Confirm Password: 
-        <input id="confirmPassword" [(ngModel)]="account.confirmPassword" #confirmPassword="ngModel" name="confirmPassword">
+        <input id="confirmPassword" [(ngModel)]="account.confirmPassword" #confirmPassword="ngModel" name="confirmPassword" required>
       </label>
       <div *ngIf="confirmPassword.dirty || confirmPassword.touched">
+        <div *ngIf="confirmPassword.errors?.required">required</div>  
         <div *ngIf="confirmPassword.errors?.notMatched">must match password</div>  
       </div>
     </div>
@@ -23,5 +24,30 @@
   <!--<div *ngIf="(password.dirty || password.touched) && (confirmPassword.dirty || confirmPassword.touched)">
     <div *ngIf="passwords.errors?.notMatched">This stuff must match!</div>
   </div>-->
+
+
+  <fieldset ngModelGroup="emails" #emails="ngModelGroup" [appMustMatch]="{matchCase:false}">
+    <div>
+      <label for="email">Email: 
+        <input id="email" [(ngModel)]="account.email" #email="ngModel" name="email" required>
+      </label>
+      <div *ngIf="email.dirty || email.touched">
+        <div *ngIf="email.errors?.required">required</div>  
+      </div>
+    </div>
+    <div>
+      <label for="confirmEmail">Confirm Email: 
+        <input id="confirmEmail" [(ngModel)]="account.confirmEmail" #confirmEmail="ngModel" name="confirmEmail" required>
+      </label>
+      <div *ngIf="confirmEmail.dirty || confirmEmail.touched">
+        <div *ngIf="confirmEmail.errors?.required">required</div>  
+        <div *ngIf="confirmEmail.errors?.notMatched">must match email</div>  
+      </div>
+    </div>
+  </fieldset>
+  <!--<div *ngIf="(email.dirty || email.touched) && (confirmEmail.dirty || confirmEmail.touched)">
+    <div *ngIf="emails.errors?.notMatched">This stuff must match!</div>
+  </div>-->
+
   <input type="submit" value="Submit" [disabled]="!myForm.valid">
 </form>

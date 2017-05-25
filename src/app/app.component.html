@@ -2,19 +2,26 @@
   {{title}}
 </h1>
 <form #myForm="ngForm" (ngSubmit)="myForm.valid && submit()" novalidate>
-  <fieldset ngModelGroup="thePassword" appMustMatch #thePassword="ngModelGroup">
-    <input [(ngModel)]="account.password" #password="ngModel" name="password" required>
-    <div *ngIf="password.dirty || password.touched">
-      <div *ngIf="password.errors?.required">required</div>  
+  <fieldset ngModelGroup="passwords" #passwords="ngModelGroup" appMustMatch>
+    <div>
+      <label for="passord">Password: 
+        <input id="password" [(ngModel)]="account.password" #password="ngModel" name="password" required>
+      </label>
+      <div *ngIf="password.dirty || password.touched">
+        <div *ngIf="password.errors?.required">required</div>  
+      </div>
     </div>
-    <input [(ngModel)]="account.confirmPassword" #confirmPassword="ngModel" name="confirmPassword" required>
-    <div *ngIf="confirmPassword.dirty || confirmPassword.touched">
-      <div *ngIf="confirmPassword.errors?.required">required</div>  
-      <div *ngIf="confirmPassword.errors?.notMatched">must match password</div>  
+    <div>
+      <label for="confirmPassword">Confirm Password: 
+        <input id="confirmPassword" [(ngModel)]="account.confirmPassword" #confirmPassword="ngModel" name="confirmPassword">
+      </label>
+      <div *ngIf="confirmPassword.dirty || confirmPassword.touched">
+        <div *ngIf="confirmPassword.errors?.notMatched">must match password</div>  
+      </div>
     </div>
   </fieldset>
   <!--<div *ngIf="(password.dirty || password.touched) && (confirmPassword.dirty || confirmPassword.touched)">
-    <div *ngIf="thePassword.errors?.notMatched">This stuff must match!</div>
+    <div *ngIf="passwords.errors?.notMatched">This stuff must match!</div>
   </div>-->
   <input type="submit" value="Submit" [disabled]="!myForm.valid">
 </form>

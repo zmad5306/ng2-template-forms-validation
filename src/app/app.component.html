@@ -21,9 +21,7 @@
       </div>
     </div>
   </fieldset>
-  <!--<div *ngIf="(password.dirty || password.touched) && (confirmPassword.dirty || confirmPassword.touched)">
-    <div *ngIf="passwords.errors?.notMatched">This stuff must match!</div>
-  </div>-->
+
 
 
   <fieldset ngModelGroup="emails" #emails="ngModelGroup" [appMustMatch]="{matchCase:false}">
@@ -45,9 +43,16 @@
       </div>
     </div>
   </fieldset>
-  <!--<div *ngIf="(email.dirty || email.touched) && (confirmEmail.dirty || confirmEmail.touched)">
-    <div *ngIf="emails.errors?.notMatched">This stuff must match!</div>
-  </div>-->
+
+
+  <fieldset ngModelGroup="numbers" #numbers="ngModelGroup" appMustMatch>
+    <p>Type the same numbers in all 4 fields:</p>
+    <input ngModel name="number1" #number1="ngModel" required type="number" min="0" max="9">
+    <input ngModel name="number2" #number1="ngModel" required type="number" min="0" max="9">
+    <input ngModel name="number3" #number1="ngModel" required type="number" min="0" max="9">
+    <input ngModel name="number4" #number1="ngModel" required type="number" min="0" max="9">
+    <div *ngIf="numbers.errors?.notMatched">The numbers have to match!</div>
+  </fieldset>
 
   <input type="submit" value="Submit" [disabled]="!myForm.valid">
 </form>

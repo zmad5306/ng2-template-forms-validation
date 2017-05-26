@@ -2,7 +2,7 @@
   {{title}}
 </h1>
 <form #myForm="ngForm" (ngSubmit)="myForm.valid && submit()" novalidate>
-  <fieldset ngModelGroup="passwords" #passwords="ngModelGroup" appMustMatch>
+  <fieldset ngModelGroup="passwords" #passwords="ngModelGroup" [appMustMatch]="{errorTarget:confirmPassword,invalidateGroup:false}">
     <div>
       <label for="passord">Password: 
         <input id="password" [(ngModel)]="account.password" #password="ngModel" name="password" required>
@@ -24,7 +24,7 @@
 
 
 
-  <fieldset ngModelGroup="emails" #emails="ngModelGroup" [appMustMatch]="{matchCase:false}">
+  <fieldset ngModelGroup="emails" #emails="ngModelGroup" [appMustMatch]="{matchCase:false,errorTarget:confirmEmail,invalidateGroup:true}">
     <div>
       <label for="email">Email: 
         <input id="email" [(ngModel)]="account.email" #email="ngModel" name="email" required>
@@ -45,7 +45,7 @@
   </fieldset>
 
 
-  <fieldset ngModelGroup="numbers" #numbers="ngModelGroup" appMustMatch>
+  <fieldset ngModelGroup="numbers" #numbers="ngModelGroup" [appMustMatch]="{invalidateGroup:true}">
     <p>Type the same numbers in all 4 fields:</p>
     <input ngModel name="number1" #number1="ngModel" required type="number" min="0" max="9">
     <input ngModel name="number2" #number1="ngModel" required type="number" min="0" max="9">

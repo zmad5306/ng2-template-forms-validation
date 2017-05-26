@@ -1,5 +1,5 @@
 import { Directive, forwardRef, Attribute, Input } from '@angular/core';
-import { Validator, AbstractControl, NG_VALIDATORS, FormGroup } from '@angular/forms';
+import { Validator, AbstractControl, NG_VALIDATORS, FormGroup, NgModel } from '@angular/forms';
 
 function getMatchCase(config: any): boolean {
   let matchCase: boolean = true;
@@ -11,6 +11,17 @@ function getMatchCase(config: any): boolean {
     }
   }
   return matchCase;
+}
+
+function getErrorTarget(config: any): AbstractControl {
+  if (config) {
+    if (config.errorTarget != null && config.errorTarget != undefined) {
+      const errorTarget: NgModel = config.errorTarget;
+      return errorTarget.control;
+    }
+  }
+
+  return null;
 }
 
 function getValid(formGroup: FormGroup, matchCase: boolean): boolean {
@@ -74,23 +85,33 @@ function setControlInvalid(control: AbstractControl) {
   control.setErrors(errors); 
 }
 
-function setErrorsOnControls(formGroup: FormGroup, valid: boolean) {
-  //loop over controls and set errors
-  //sets errors on all controls in group, messages can be displayed as necessary
-  Object.keys(formGroup.controls).forEach(key => {
-    //get the control
-    let control = formGroup.controls[key];
-
-    //validation success
+function setErrorsOnControls(formGroup: FormGroup, valid: boolean, errorTarget: AbstractControl) {
+  if (errorTarget) {
     if (valid) {
-      setControlValid(control);
+      setControlValid(errorTarget);
     }
-
-    //validation failed
     else {
-      setControlInvalid(control);
+      setControlInvalid(errorTarget);
     }
-  });
+  }
+  else {
+    //loop over controls and set errors
+    //sets errors on all controls in group, messages can be displayed as necessary
+    Object.keys(formGroup.controls).forEach(key => {
+      //get the control
+      let control = formGroup.controls[key];
+
+      //validation success
+      if (valid) {
+        setControlValid(control);
+      }
+
+      //validation failed
+      else {
+        setControlInvalid(control);
+      }
+    });
+  }
 }
 
 @Directive({
@@ -108,22 +129,19 @@ export class MustMatchDirective implements Validator {
   validate(formGroup: FormGroup) {
 
     const matchCase: boolean = getMatchCase(this.config);
-
+    const errorTarget: AbstractControl = getErrorTarget(this.config);
     const valid: boolean = getValid(formGroup, matchCase);
 
-    setErrorsOnControls(formGroup, valid);
+    setErrorsOnControls(formGroup, valid, errorTarget);
 
-    //mark the group valid
+    
+    //mark the group invalid
     if (valid) {
-      return null;
-    }
-
-    //mark the group invalid, messages can be displayed 
-    //for the group as necessary
-    else {
-      return {notMatched: true};
+      return null;    
     }
     
+
+    return {notMatched: true};
   }
 
 }

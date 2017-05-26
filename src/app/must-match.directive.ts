@@ -49,7 +49,7 @@ function setControlValid(control: AbstractControl) {
       control.setErrors(errors); 
     }
 
-    //no existing errors
+    //no other errors
     else {
       control.setErrors(null); 
     }
@@ -76,21 +76,21 @@ function setControlInvalid(control: AbstractControl) {
 
 function setErrorsOnControls(formGroup: FormGroup, valid: boolean) {
   //loop over controls and set errors
-    //sets errors on all controls in group, messages can be displayed as necessary
-    Object.keys(formGroup.controls).forEach(key => {
-      //get the control
-      let control = formGroup.controls[key];
+  //sets errors on all controls in group, messages can be displayed as necessary
+  Object.keys(formGroup.controls).forEach(key => {
+    //get the control
+    let control = formGroup.controls[key];
 
-      //validation success
-      if (valid) {
-        setControlValid(control);
-      }
+    //validation success
+    if (valid) {
+      setControlValid(control);
+    }
 
-      //validation failed
-      else {
-        setControlInvalid(control);
-      }
-    });
+    //validation failed
+    else {
+      setControlInvalid(control);
+    }
+  });
 }
 
 @Directive({

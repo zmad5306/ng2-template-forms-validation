@@ -2,7 +2,9 @@
   {{title}}
 </h1>
 <form #myForm="ngForm" (ngSubmit)="myForm.valid && submit()" novalidate>
-  <fieldset ngModelGroup="passwords" #passwords="ngModelGroup" [appMustMatch]="{errorTarget:confirmPassword,invalidateGroup:false}">
+  <h2>Targeted Error - Case Sensitive</h2>
+  <p>Only invalidates confirm field. Case must match.</p>
+  <fieldset ngModelGroup="passwords" #passwords="ngModelGroup" [appMustMatch]="{errorTarget:confirmPassword}">
     <div>
       <label for="passord">Password: 
         <input id="password" [(ngModel)]="account.password" #password="ngModel" name="password" required>
@@ -21,37 +23,39 @@
       </div>
     </div>
   </fieldset>
-
-
-
-  <fieldset ngModelGroup="emails" #emails="ngModelGroup" [appMustMatch]="{matchCase:false,errorTarget:confirmEmail,invalidateGroup:true}">
+  <h2>Targeted Error - Case Insensitive</h2>
+  <p>Only invalidates confirm field. Case doesn't have to match.</p>
+  <fieldset ngModelGroup="emails" #emails="ngModelGroup" [appMustMatch]="{matchCase:false,errorTarget:confirmEmail}">
     <div>
       <label for="email">Email: 
-        <input id="email" [(ngModel)]="account.email" #email="ngModel" name="email" required>
+        <input id="email" [(ngModel)]="account.email" #email="ngModel" name="email" required email>
       </label>
       <div *ngIf="email.dirty || email.touched">
         <div *ngIf="email.errors?.required">required</div>  
+        <div *ngIf="email.errors?.email">type an e-mail</div>  
       </div>
     </div>
     <div>
       <label for="confirmEmail">Confirm Email: 
-        <input id="confirmEmail" [(ngModel)]="account.confirmEmail" #confirmEmail="ngModel" name="confirmEmail" required>
+        <input id="confirmEmail" [(ngModel)]="account.confirmEmail" #confirmEmail="ngModel" name="confirmEmail" required email>
       </label>
       <div *ngIf="confirmEmail.dirty || confirmEmail.touched">
         <div *ngIf="confirmEmail.errors?.required">required</div>  
         <div *ngIf="confirmEmail.errors?.notMatched">must match email</div>  
+        <div *ngIf="confirmEmail.errors?.email">type an e-mail</div>  
       </div>
     </div>
   </fieldset>
-
-
-  <fieldset ngModelGroup="numbers" #numbers="ngModelGroup" [appMustMatch]="{invalidateGroup:true}">
+  <h2>Group Error</h2>
+  <p>All fields have to match, a single error is displayed for the entire group. Invalidates all fields until the match.</p>
+  <fieldset ngModelGroup="numbers" #numbers="ngModelGroup" appMustMatch>
     <p>Type the same numbers in all 4 fields:</p>
     <input ngModel name="number1" #number1="ngModel" required type="number" min="0" max="9">
-    <input ngModel name="number2" #number1="ngModel" required type="number" min="0" max="9">
-    <input ngModel name="number3" #number1="ngModel" required type="number" min="0" max="9">
-    <input ngModel name="number4" #number1="ngModel" required type="number" min="0" max="9">
+    <input ngModel name="number2" #number2="ngModel" required type="number" min="0" max="9">
+    <input ngModel name="number3" #number3="ngModel" required type="number" min="0" max="9">
+    <input ngModel name="number4" #number4="ngModel" required type="number" min="0" max="9">
     <div *ngIf="numbers.errors?.notMatched">The numbers have to match!</div>
+    <div *ngIf="number1.errors?.required || number2.errors?.required || number3.errors?.required || number4.errors?.required">All numbers are requried!</div>
   </fieldset>
 
   <input type="submit" value="Submit" [disabled]="!myForm.valid">

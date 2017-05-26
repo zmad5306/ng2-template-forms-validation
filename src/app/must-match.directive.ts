@@ -109,6 +109,9 @@ function setErrorsOnControls(formGroup: FormGroup, valid: boolean, errorTarget: 
       //validation failed
       else {
         setControlInvalid(control);
+        if(control.touched) {
+          control.markAsDirty();
+        }
       }
     });
   }

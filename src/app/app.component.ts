@@ -15,7 +15,7 @@ export class Account {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  title = 'ng2 Multiple Field Validations';
   account: Account = new Account('', '', '', '');
   submit(): void {
     console.log(this.account);

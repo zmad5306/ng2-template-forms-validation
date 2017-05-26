@@ -13,20 +13,20 @@ function getMatchCase(config: any): boolean {
   return matchCase;
 }
 
-function getValid(c: FormGroup, matchCase: boolean): boolean {
+function getValid(formGroup: FormGroup, matchCase: boolean): boolean {
   const values = new Set();
 
   //add each value in the group to a set (will remove dupes)
-  Object.keys(c.controls).forEach(key => {
+  Object.keys(formGroup.controls).forEach(key => {
     if (matchCase) {
-      values.add(c.controls[key].value);
+      values.add(formGroup.controls[key].value);
     }
     else {
-      if (c.controls[key].value) {
-        values.add(c.controls[key].value.toLowerCase());
+      if (formGroup.controls[key].value) {
+        values.add(formGroup.controls[key].value.toLowerCase());
       }
       else {
-        values.add(c.controls[key].value);
+        values.add(formGroup.controls[key].value);
       }
     }
   });
@@ -74,12 +74,12 @@ function setControlInvalid(control: AbstractControl) {
   control.setErrors(errors); 
 }
 
-function setErrorsOnControls(c: FormGroup, valid: boolean) {
+function setErrorsOnControls(formGroup: FormGroup, valid: boolean) {
   //loop over controls and set errors
     //sets errors on all controls in group, messages can be displayed as necessary
-    Object.keys(c.controls).forEach(key => {
+    Object.keys(formGroup.controls).forEach(key => {
       //get the control
-      let control = c.controls[key];
+      let control = formGroup.controls[key];
 
       //validation success
       if (valid) {
@@ -105,13 +105,13 @@ export class MustMatchDirective implements Validator {
 
   constructor() { }
 
-  validate(c: FormGroup) {
+  validate(formGroup: FormGroup) {
 
     const matchCase: boolean = getMatchCase(this.config);
 
-    const valid: boolean = getValid(c, matchCase);
+    const valid: boolean = getValid(formGroup, matchCase);
 
-    setErrorsOnControls(c, valid);
+    setErrorsOnControls(formGroup, valid);
 
     //mark the group valid
     if (valid) {

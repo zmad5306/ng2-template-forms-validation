@@ -27,7 +27,7 @@ function getErrorTarget(config: any): AbstractControl {
 function getValid(formGroup: FormGroup, matchCase: boolean): boolean {
   const values = new Set();
 
-  //add each value in the group to a set (will remove dupes)
+  //add each value in the group to a set (will only add matching values once)
   Object.keys(formGroup.controls).forEach(key => {
     if (matchCase) {
       values.add(formGroup.controls[key].value);
@@ -42,7 +42,7 @@ function getValid(formGroup: FormGroup, matchCase: boolean): boolean {
     }
   });
 
-  //if the set has more than 1 there are dupes
+  //if the set has more than 1 then there are multiple unique values
   //thus validation will fail
   return values.size <= 1;
 }
@@ -143,7 +143,7 @@ export class MustMatchDirective implements Validator {
       return null;    
     }
     
-
+    //mark the group invalid
     return {notMatched: true};
   }
 
